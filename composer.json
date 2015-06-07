@@ -1,0 +1,21 @@
+{
+    "name": "tentwentyfour/blockdiag-mediawiki-extension",
+    "description": "Blockdiag wrapper for Mediawiki",
+    "homepage": "https://github.com/tentwentyfour/blockdiag-mediawiki-extension",
+    "type": "mediawiki-extension",
+    "require": {
+        "php": "~5.3",
+		"composer/installers": "~1.0"
+    },
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "KOJIMA Kazunori",
+            "homepage": "https://github.com/kjmkznr"
+        },
+        {
+            "name": "David Raison",
+            "email": "david@tentwentyfour.lu"
+        }
+    ]
+}
