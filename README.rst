@@ -19,7 +19,10 @@ install
 
 2. Add line to LocalSettings.php ::
 
-   + require_once("$IP/extensions/blockdiag.php");
+```php
+   require_once("$IP/extensions/blockdiag.php");
+   $wgBlockdiagPath = '/usr/bin/';      // default is /usr/local/bin/
+```
 
 example
 =======

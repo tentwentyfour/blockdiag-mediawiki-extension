@@ -2,7 +2,7 @@
 /**
  * @filename: blockdiag.php
  * @license: LGPL (GNU Lesser General Public License) http://www.gnu.org/licenses/lgpl.html
- * @author: Kazunori Kojima
+ * @author: Kazunori Kojima, David Raison <david@tentwentyfour.lu>
  */
 
 /**
@@ -13,7 +13,7 @@
   }
 **/
 
-if( defined( 'MEDIAWIKI' ) ) {
+if (defined('MEDIAWIKI')) {
 
 	$wgHooks['ParserFirstCallInit'][] = 'blockdiagMain';
 	$wgJobClasses['uploadBlockdiag'] = 'UploadBlockdiagJob';
@@ -33,6 +33,7 @@ if( defined( 'MEDIAWIKI' ) ) {
 		global $wgTmpDirectory;
 		global $wgUploadDirectory;
 		global $wgUploadPath;
+		global $wgBlockdiagPath;
 
 		$wgBlockdiagDirectory = "$wgUploadDirectory/blockdiag";
 		$wgBlockdiagUrl = "$wgUploadPath/blockdiag";
@@ -41,7 +42,8 @@ if( defined( 'MEDIAWIKI' ) ) {
 			$wgBlockdiagDirectory,
 			$wgBlockdiagUrl,
 			$wgTmpDirectory, 
-			$input
+			$input,
+			$wgBlockdiagPath
 		);
 		$html = $newBlockdiag->showImage();
 
@@ -54,7 +56,7 @@ if( defined( 'MEDIAWIKI' ) ) {
  * Blockdiag
  **/
 class Blockdiag {
-        private $_path_array = array(
+        /*private $_path_array = array(
            'blockdiag' => '/usr/local/bin/blockdiag',
            'seqdiag' => '/usr/local/bin/seqdiag',
            'actdiag' => '/usr/local/bin/actdiag',
@@ -62,6 +64,15 @@ class Blockdiag {
            'rackdiag' => '/usr/local/bin/rackdiag',     # in nwdiag
            'packetdiag' => '/usr/local/bin/packetdiag', # in nwdiag
            );
+	*/
+	private $_path_array = array(
+		'blockdiag',
+		'seqdiag',
+		'actdiag',
+		'nwdiag',
+		'rackdiag',
+		'packetdiag'
+	);
 	private $_imgType = 'png';
 	private $_hash;
 	private $_source;
@@ -69,17 +80,23 @@ class Blockdiag {
 	private $_blockdiagDir;
 	private $_blockdiagUrl;
 
-	public function __construct( $blockdiagDir, $blockdiagUrl, $tmpDir, $source )
+	public function __construct( $blockdiagDir, $blockdiagUrl, $tmpDir, $source, $binPath = null) 
 	{
 		$this->_blockdiagDir  = $blockdiagDir;
 		$this->_blockdiagUrl  = $blockdiagUrl;
 		$this->_tmpDir        = $tmpDir;
-		$this->_hash          = md5( $source );
+		$this->_hash          = md5($source);
 		$this->_source        = $source;
+		$path = ($binPath !== null) ? $binPath : '/usr/local/bin/';
+		$this->_path_array = array_flip($this->_path_array);
+		array_walk($this->_path_array, function (&$diag, $binary) use ($binPath) {
+			$diag = $binPath . $binary;
+		});
 	}
 	
-	public function showImage() {
-		if( file_exists( $this->_getImagePath() ) ) {
+	public function showImage() 
+	{
+		if (file_exists( $this->_getImagePath())) {
 			$html = $this->_mkImageTag();
 		} else {
 			$html = $this->_generate();
@@ -88,17 +105,16 @@ class Blockdiag {
 		return $html;
 	}
 
-	private function _generate() {
+	private function _generate() 
+	{
                 if (preg_match('/^\s*(\w+)\s*{/', $this->_source, $matches)) {
                    $diagram_type = $matches[1];
                 } else { 
-                   #return $this->_error("diagtype is not specified.");
                    $diagram_type = 'blockdiag'; # blockdiag for default
                 }
                 
                 $diagprog_path = $this->_path_array[$diagram_type];
-        	if (!is_file($diagprog_path))
-        	{
+        	if (!is_file($diagprog_path)) {
         	    return $this->_error("$diagram_type is not found at the specified place.");
 		}
 
@@ -165,25 +181,30 @@ class Blockdiag {
 		);	
 	}
 
-	private function _getImageUrl() {
+	private function _getImageUrl() 
+	{
 		return "{$this->_blockdiagUrl}/{$this->_getHashSubPath()}/{$this->_hash}.png";
 	}
 
-	private function _getImagePath() {
+	private function _getImagePath() 
+	{
 		return "{$this->_blockdiagDir}/{$this->_getHashSubPath()}/{$this->_hash}.png";
 	}
 
-	private function _getHashPath() {
+	private function _getHashPath() 
+	{
 		return "{$this->_blockdiagDir}/{$this->_getHashSubPath()}";
 	}
 	
-	private function _getHashSubPath() {
+	private function _getHashSubPath() 
+	{
 		return substr($this->_hash, 0, 1)
-					.'/'. substr($this->_hash, 1, 1)
-					.'/'. substr($this->_hash, 2, 1);
+			.'/'. substr($this->_hash, 1, 1)
+			.'/'. substr($this->_hash, 2, 1);
 	}
 
-	private function _error( $msg, $append = '' ) {
+	private function _error( $msg, $append = '' ) 
+	{
 		$mf     = 'blockdiag';
 		$errmsg = htmlspecialchars( $msg . ' ' . $append );
 		return "<strong class='error'>$mf ($errmsg)</strong>\n";
