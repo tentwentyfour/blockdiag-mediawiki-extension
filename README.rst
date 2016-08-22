@@ -2,13 +2,13 @@
 Blockdiag MediaWiki Extension
 =============================
 
-requirement
-===========
+Requirements
+============
 
 - blockdiag_ (or seqdiag, actdiag, nwdiag)
-- mediawiki >1.16
+- mediawiki >= 1.25.0
 
-.. _blockdiag: http://tk0miya.bitbucket.org/blockdiag/build/html/
+.. _blockdiag: http://blockdiag.com/en/
 
 install
 =======
@@ -19,13 +19,11 @@ install
 
 2. Add line to LocalSettings.php ::
 
-::
-
-        require_once("$IP/extensions/blockdiag.php");
-        $wgBlockdiagPath = '/usr/bin/';      // default is /usr/local/bin/
+   require_once("$IP/extensions/blockdiag.php");
+   $wgBlockdiagPath = '/usr/bin/';      // default is /usr/local/bin/
 
 
-example
+Example
 =======
 
 ::
@@ -47,8 +45,3 @@ If you want to use other *diag tools, specify a name before "{", like "seqdiag {
                     B -> C;
        }
        </blockdiag>
-
-known issues
-============
-
-

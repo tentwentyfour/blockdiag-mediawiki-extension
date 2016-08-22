@@ -89,8 +89,8 @@ class Blockdiag {
 		$this->_source        = $source;
 		$path = ($binPath !== null) ? $binPath : '/usr/local/bin/';
 		$this->_path_array = array_flip($this->_path_array);
-		array_walk($this->_path_array, function (&$diag, $binary) use ($binPath) {
-			$diag = $binPath . $binary;
+		array_walk($this->_path_array, function (&$diag, $binary) use ($path) {
+			$diag = $path . $binary;
 		});
 	}
 	
@@ -114,6 +114,7 @@ class Blockdiag {
                 }
                 
                 $diagprog_path = $this->_path_array[$diagram_type];
+		
         	if (!is_file($diagprog_path)) {
         	    return $this->_error("$diagram_type is not found at the specified place.");
 		}
