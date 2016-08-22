@@ -10,7 +10,7 @@ Requirements
 
 .. _blockdiag: http://blockdiag.com/en/
 
-install
+Install
 =======
 
 1. Copy blockdiag.php to ${MEDIAWIKI_ROOT}/extension/ ::
@@ -18,6 +18,8 @@ install
    $ sudo cp blockdiag.php ${MEDIAWIKI_ROOT}/extension/
 
 2. Add line to LocalSettings.php ::
+
+::
 
    require_once("$IP/extensions/blockdiag.php");
    $wgBlockdiagPath = '/usr/bin/';      // default is /usr/local/bin/
