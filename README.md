@@ -12,18 +12,19 @@ Install
 -------
 
 1. Simply run the following command inside your mediawiki doc-root:
-
+```
   $ composer require tentwentyfour/blockdiag-mediawiki-extension
-
+```
 
 2. Then add these lines to LocalSettings.php ::
-
-    wfLoadExtension('Blockdiag');
+```
+    wfLoadExtension('BlockdiagMediawiki');
+```
 
 3. (Optional) If you installed your blockdiag package somewhere else than the default, you may tell the plugin where to find the binaries:
-
+```
     $wgBlockdiagPath = '/usr/bin/';      // default is /usr/local/bin/
-
+```
 
 Example
 =======
