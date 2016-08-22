@@ -3,9 +3,10 @@
     "description": "Blockdiag wrapper for Mediawiki",
     "homepage": "https://github.com/tentwentyfour/blockdiag-mediawiki-extension",
     "type": "mediawiki-extension",
+    "version": "0.1",
     "require": {
         "php": "~5.3",
-		"composer/installers": "~1.0"
+        "composer/installers": "~1.0"
     },
     "license": "Apache-2.0",
     "authors": [

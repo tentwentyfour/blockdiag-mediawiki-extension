@@ -1,0 +1,27 @@
+{
+    "name": "blockdiag-mediawiki-extension",
+    "version": "0.1",
+    "author": [
+        "David Raison",
+        "KOJIMA Kazunori"
+    ],
+    "url": "https://github.com/tentwentyfour/blockdiag-mediawiki-extension",
+    "descriptionmsg": "Allow the use of blockdiag syntax in MediaWiki.",
+    "license-name": "Apache-2.0",
+    "type": "parserhook",
+    "requires": {
+        "MediaWiki": ">= 1.25.0"
+    },
+    "AutoloadClasses": {
+        "Blockdiag": "blockdiag.php"
+    },
+    "Hooks": {
+        "ParserFirstCallInit" : [
+            "Blockdiag::parserInit"
+        ]
+    },
+    "config": {
+        "BlockdiagPath": "/usr/local/bin"
+    },
+    "manifest_version": 1
+}

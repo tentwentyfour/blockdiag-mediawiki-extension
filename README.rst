@@ -13,16 +13,14 @@ Requirements
 Install
 =======
 
-1. Copy blockdiag.php to ${MEDIAWIKI_ROOT}/extension/ ::
+1. Clone this repo inside to the ``${MEDIAWIKI_ROOT}/extension`` directory ::
 
-   $ sudo cp blockdiag.php ${MEDIAWIKI_ROOT}/extension/
+    $ git clone https://github.com/tentwentyfour/blockdiag-mediawiki-extension
 
-2. Add line to LocalSettings.php ::
+2. Add these lines to LocalSettings.php ::
 
-::
-
-   require_once("$IP/extensions/blockdiag.php");
-   $wgBlockdiagPath = '/usr/bin/';      // default is /usr/local/bin/
+    wfLoadExtension('blockdiag-mediawiki-extension');
+    $wgBlockdiagPath = '/usr/bin/';      // default is /usr/local/bin/
 
 
 Example
