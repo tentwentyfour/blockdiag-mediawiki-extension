@@ -13,13 +13,10 @@
     "requires": {
         "MediaWiki": ">= 1.25.0"
     },
-    "LogTypes": [
-            "renameuser"
-    ],
     "MessagesDirs": {
-            "Blockdiag": [
-                    "i18n"
-            ]
+        "Blockdiag": [
+                "i18n"
+        ]
     },
     "AutoloadClasses": {
         "Blockdiag": "Blockdiag.php"
