@@ -1,8 +1,12 @@
 {
     "name": "tentwentyfour/blockdiag-mediawiki-extension",
+    "type": "mediawiki-extension",
     "description": "Blockdiag wrapper for Mediawiki",
     "homepage": "https://github.com/tentwentyfour/blockdiag-mediawiki-extension",
-    "type": "mediawiki-extension",
+    "keywords": [
+        "mediawiki",
+        "diagram"
+    ],
     "version": "1.0.1",
     "require": {
         "php": ">=5.4",
