@@ -2,16 +2,24 @@
     "name": "Blockdiag",
     "version": "1.0.1",
     "author": [
-        "RAISON David",
+        "David Raison",
         "Gilles R. Magalhaes",
-        "KOJIMA Kazunori"
+        "Kazunori Kojima"
     ],
     "url": "https://github.com/tentwentyfour/blockdiag-mediawiki-extension",
-    "descriptionmsg": "Allow the use of blockdiag syntax in MediaWiki.",
+    "descriptionmsg": "blockdiag-desc",
     "license-name": "Apache-2.0",
     "type": "parserhook",
     "requires": {
         "MediaWiki": ">= 1.25.0"
+    },
+    "LogTypes": [
+            "renameuser"
+    ],
+    "MessagesDirs": {
+            "Blockdiag": [
+                    "i18n"
+            ]
     },
     "AutoloadClasses": {
         "Blockdiag": "Blockdiag.php"

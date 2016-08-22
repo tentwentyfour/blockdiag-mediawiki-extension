@@ -32,7 +32,7 @@ class Blockdiag {
 		$path = ($binPath !== null) ? $binPath : '/usr/local/bin/';
 		$this->_path_array = array_flip($this->_path_array);
 		array_walk($this->_path_array, function (&$diag, $binary) use ($path) {
-            $diag = rtrim($path, '/') . '/' . $binary;
+            $diag = rtrim($path, '/') . DIRECTORY_SEPARATOR . $binary;
 		});
 	}
 

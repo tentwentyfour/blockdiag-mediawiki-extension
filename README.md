@@ -4,10 +4,9 @@ Blockdiag MediaWiki Extension
 Requirements
 ------------
 
-- blockdiag_ (or seqdiag, actdiag, nwdiag)
+- [blockdiag](http://blockdiag.com/en/) (or seqdiag, actdiag, nwdiag)
 - mediawiki >= 1.25.0
 
-.. _blockdiag: http://blockdiag.com/en/
 
 Install
 -------
