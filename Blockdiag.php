@@ -1,6 +1,10 @@
 <?php
 /**
- * Blockdiag
+ * Blockdiag Extension for MediaWiki
+ *
+ * @since 0.0.1
+ * @version 1.0.1
+ *
  **/
 class Blockdiag {
 	private $_path_array = array(

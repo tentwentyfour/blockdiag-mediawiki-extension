@@ -1,9 +1,10 @@
 {
-    "name": "blockdiag-mediawiki-extension",
-    "version": "1.0.0",
+    "name": "Blockdiag",
+    "version": "1.0.1",
     "author": [
-        "David Raison",
-        "KOJIMA Kazunori"
+        "RAISON David",
+        "Gilles R. Magalhaes",
+        "KOJIMA Kazunori",
     ],
     "url": "https://github.com/tentwentyfour/blockdiag-mediawiki-extension",
     "descriptionmsg": "Allow the use of blockdiag syntax in MediaWiki.",
