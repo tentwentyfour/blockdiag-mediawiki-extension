@@ -48,3 +48,6 @@ If you want to use other *diag tools, specify their name before the leading open
   }
   </blockdiag>
 ```
+
+![Blockdiag example](/contrib/example.png?raw=true "Blockdiag example")
+
