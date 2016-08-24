@@ -38,6 +38,8 @@ Example
   </blockdiag>
 ```
 
+![Blockdiag example](/contrib/example.png?raw=true "Blockdiag example")
+
 If you want to use other *diag tools, specify their name before the leading opening brace: "{", e.g. "seqdiag {".
 
 ```
@@ -48,6 +50,4 @@ If you want to use other *diag tools, specify their name before the leading open
   }
   </blockdiag>
 ```
-
-![Blockdiag example](/contrib/example.png?raw=true "Blockdiag example")
 
