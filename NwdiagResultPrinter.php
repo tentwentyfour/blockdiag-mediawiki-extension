@@ -89,6 +89,15 @@ class NwdiagResultPrinter extends SMWResultPrinter {
         return $data;
     }
 
+    /**
+     * @see SMWResultPrinter::getParamDefinitions
+     *
+     * @since 1.8
+     *
+     * @param $definitions array of IParamDefinition
+     *
+     * @return array of IParamDefinition|array
+     */
     public function getParamDefinitions( array $definitions ) {
         $params = parent::getParamDefinitions( $definitions );
 
@@ -144,9 +153,16 @@ class NwdiagResultPrinter extends SMWResultPrinter {
         }
         $diagCode .= "}\n";
 
+
+        //str_replace("\n", "<br>", $)
+
+        echo $diagCode;
+        exit();
+
         return $diagCode;
     }
 
+    // walk through the $nodes array to find all groups with
     private function findNodeGroups( $nodes ) {
         $groups = array();
 
@@ -174,6 +190,10 @@ class NwdiagResultPrinter extends SMWResultPrinter {
     }
 
     public function randomColor() {
-        return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+        $color = '#';
+        for ($i = 0; $i <= 2; $i++) {
+            $color .= dechex(mt_rand(0xAA, 0xFF));
+        }
+        return $color;
     }
 }

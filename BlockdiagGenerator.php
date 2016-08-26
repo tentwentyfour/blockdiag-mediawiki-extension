@@ -116,13 +116,15 @@ class BlockdiagGenerator {
 	private function _mkImageTag() {
 		$url = $this->_getImageUrl();
 
-		return Xml::element(
-            'img',
-			array(
-				'class' => 'blockdiag',
-				'src' => $url,
-			)
-		);
+        return '<div style="overflow-x:scroll">' .
+            Xml::element(
+                'img',
+    			array(
+    				'class' => 'blockdiag',
+    				'src' => $url,
+    			)
+    		) .
+            "</div>";
 	}
 
 	private function _getImageUrl()
