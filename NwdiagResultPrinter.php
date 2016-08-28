@@ -52,6 +52,14 @@ class NwdiagResultPrinter extends SMWResultPrinter
     }
 
 
+    /**
+     * Extracts the data we need to build a networkdiag DSL from the
+     * semantic result
+     *
+     * @param  SMWQueryResult $result Result of the query
+     *
+     * @return array                  Array of data to be fed to generateDiagCode()
+     */
     protected function getResultData(SMWQueryResult $result)
     {
         $data = array();
@@ -70,30 +78,33 @@ class NwdiagResultPrinter extends SMWResultPrinter
                     } elseif ($propertyLabel === "fqdn") {
                         $fqdn = strtolower($dataValue->getWikiValue());
 
-                        if (!strlen($fqdn)) {
-                            $data[$server_name]["fqdn"] = $server_name;
-                            $data[$server_name]["node_host"] = $server_name;
-                            $data[$server_name]["group"] = $server_name;
-                            continue;
-                        }
-
                         if (isset($this->params['domain'])) {
                             $fqdn = str_replace($this->params['domain'], '', $fqdn);
                         }
 
                         $domain_parts = explode('.', $fqdn);
+                        $hostname = $domain_parts[0];
                         $group = '';
 
-                        $hostname = $domain[0];
                         if (count($domain_parts) >= 1) {
                             $group = $domain_parts[1];
+                            $node_host = sprintf('%s.%s', $hostname, $group);
                         }
 
                         $data[$server_name]["fqdn"] = $fqdn;
-                        $data[$server_name]["node_host"] = implode(".", array_slice($domain_parts, 0, 2));
+                        $data[$server_name]["node_host"] = !empty($group) ? $node_host : $hostname;
                         $data[$server_name]["group"] = $group;
                     }
                 }
+
+                // If a row does not have a value for the FQDN property label, it will not be returned
+                // by $field->getNextDataValue()
+                if (!isset($data[$server_name]['fqdn'])) {
+                    $data[$server_name]["fqdn"] = $server_name;
+                    $data[$server_name]["node_host"] = $server_name;
+                    $data[$server_name]["group"] = $server_name;
+                }
+
             }
         }
 
