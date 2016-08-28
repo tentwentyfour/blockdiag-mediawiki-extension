@@ -113,10 +113,15 @@ class NwdiagResultPrinter extends SMWResultPrinter
     {
         $params = parent::getParamDefinitions($definitions);
 
-        $params['gateway'] = array(
+        $params['gateway'] = [
             'message' => 'The node that will be used as a gateway',
             'default' => '',
-        );
+        ];
+
+        $params['domain'] = [
+            'message' => 'Specify which part of the fqdn is the domain name and should be stripped',
+            'default' => 'localhost.lan',
+        ];
 
         return $params;
     }
@@ -144,8 +149,8 @@ class NwdiagResultPrinter extends SMWResultPrinter
         $diagCode .= "\tnetwork vpn {\n";
         foreach ($nodes as $node) {
             $ip = $node['ip_address'];
-            $partial_fqdn = $node['partial_fqdn'];
-            $diagCode .= "\t\t$partial_fqdn [address=\"$ip\"];" . PHP_EOL;
+            $node_host = $node['node_host'];
+            $diagCode .= "\t\t$node_host [address=\"$ip\"];" . PHP_EOL;
         }
         $diagCode .= "\t}" . PHP_EOL;
 

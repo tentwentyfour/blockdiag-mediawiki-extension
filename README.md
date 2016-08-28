@@ -161,7 +161,7 @@ Example query
 -------------
 
 ```
-{{#ask:[[Uses VPN tunnel::Some tunnel name here]|format=nwdiag|domain=srv.domain.tld|gateway=baz|?Has tunnel IPv4=ipv4|?Has fqdn=fqdn}}
+{{#ask:[[Uses VPN tunnel::Some tunnel name here]]|format=nwdiag|domain=srv.domain.tld|gateway=baz|?Has tunnel IPv4=ipv4|?Has fqdn=fqdn}}
 ```
 
 The `gateway` parameter is optional.

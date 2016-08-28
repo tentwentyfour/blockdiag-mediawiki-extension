@@ -13,17 +13,25 @@
 
 class Blockdiag
 {
-    public function parserInit (&$parser)
+    /**
+     * Registers both the parserhook and the semantic result printer
+     *
+     * @param  Parser &$parser Mediawiki Parser
+     *
+     * @return boolean         Returns true unless an error ocurred
+     */
+    public function parserInit(&$parser)
     {
         global $srfgFormats, $smwgResultFormats;
+
         $srfgFormats[] = 'nwdiag';
         $smwgResultFormats['nwdiag'] = 'NwdiagResultPrinter';
 
-        $parser->setHook( 'blockdiag', 'Blockdiag::display' );
+        $parser->setHook('blockdiag', 'Blockdiag::display');
         return true;
     }
 
-    public function display( $input, $args, $parser )
+    public function display($input, $args, $parser)
     {
         global $wgTmpDirectory;
         global $wgUploadDirectory;
