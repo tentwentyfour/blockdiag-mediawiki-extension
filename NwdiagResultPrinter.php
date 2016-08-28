@@ -150,7 +150,7 @@ class NwdiagResultPrinter extends SMWResultPrinter
         $diagCode = 'nwdiag {' . PHP_EOL;
 
         // draw gateway
-        $match = $this->findGateway( $nodes, $gateway );
+        $match = $this->findGateway($nodes, $gateway);
         if ($match != "") {
             $diagCode .= "\t" . $match[1] . " [shape = ellipse];" . PHP_EOL;
             $diagCode .= "\t" . $match[1] . " -- " . implode(".", $match) . "\n\n";
@@ -214,9 +214,9 @@ class NwdiagResultPrinter extends SMWResultPrinter
     {
         $match = null;
         foreach ($nodes as $node) {
-            $partial_fqdn = $node['partial_fqdn'];
-            if (strpos($partial_fqdn, $gateway) !== false) {
-                $match = explode(".", $partial_fqdn);
+            $node_host = $node['node_host'];
+            if (strpos($node_host, $gateway) !== false) {
+                $match = explode(".", $node_host);
             }
         }
         return $match;

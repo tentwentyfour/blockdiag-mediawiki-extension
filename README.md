@@ -160,8 +160,17 @@ Has tunnel IPv4={{{tipv4|}}}
 Example query
 -------------
 
+E.g. on a page that is named after one of your OpenVPN configurations, you could use a query like the following one:
+
 ```
-{{#ask:[[Uses VPN tunnel::Some tunnel name here]]|format=nwdiag|domain=srv.domain.tld|gateway=baz|?Has tunnel IPv4=ipv4|?Has fqdn=fqdn}}
+{{#ask:
+ [[Uses VPN tunnel::{{PAGENAME}}]]
+ |format=nwdiag
+ |domain=servers.mydomain.tld
+ |gateway=gateway.hypervisor
+ |?Has tunnel IPv4=ipv4
+ |?Has fqdn=fqdn
+}}
 ```
 
 The `gateway` parameter is optional.
