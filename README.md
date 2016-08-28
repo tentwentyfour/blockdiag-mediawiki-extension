@@ -87,6 +87,9 @@ network dmz {
 ![Nwdiag example](/contrib/nwdiag.png?raw=true "Nwdiag example")
 
 
+Please note that the Blockdiag extension will cache your images so that they don't have to be re-rendered on each page-load. If you need your diagram to be re-rendered, you need to referesh or edit the page or disable caching for the page.
+
+
 Using the Semantic Result Printer
 =================================
 
@@ -168,6 +171,7 @@ E.g. on a page that is named after one of your OpenVPN configurations, you could
  |format=nwdiag
  |domain=servers.mydomain.tld
  |gateway=gateway.hypervisor
+ |sort=Has tunnel IPv4
  |?Has tunnel IPv4=ipv4
  |?Has fqdn=fqdn
 }}
