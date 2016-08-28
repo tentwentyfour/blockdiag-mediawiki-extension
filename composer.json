@@ -12,6 +12,10 @@
         "php": ">=5.4",
         "composer/installers": "~1.0"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "~1.5",
+        "phpspec/phpspec": "~2.0"
+    },
     "license": "Apache-2.0",
     "authors": [
         {
@@ -21,6 +25,11 @@
         {
             "name": "David Raison",
             "email": "david@tentwentyfour.lu",
+            "homepage": "https://www.1024.lu"
+        },
+        {
+            "name": "Gilles Magalhaes",
+            "email": "gilles@tentwentyfour.lu",
             "homepage": "https://www.1024.lu"
         }
     ]

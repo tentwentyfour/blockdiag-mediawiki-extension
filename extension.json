@@ -2,9 +2,9 @@
     "name": "Blockdiag",
     "version": "1.1.0",
     "author": [
+        "Kazunori Kojima",
         "David Raison",
-        "Gilles R. Magalhaes",
-        "Kazunori Kojima"
+        "Gilles R. Magalhaes"
     ],
     "url": "https://github.com/tentwentyfour/blockdiag-mediawiki-extension",
     "descriptionmsg": "blockdiag-desc",
