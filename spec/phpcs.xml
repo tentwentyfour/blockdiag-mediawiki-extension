@@ -3,7 +3,9 @@
     <!-- Date updated: April 16th 2016 (DR) -->
 
     <!-- Using PSR2 as a base, with a couple of additional checks -->
-    <rule ref="PSR2"/>
+    <rule ref="PSR2">
+        <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+    </rule>
     <!-- PSR2 includes PSR-1 and many Generic, Squiz and Zend rulesets,
     so if they're not listed here, they're probably already in PSR-2.
     Please check before adding new rules or rulesets -->
