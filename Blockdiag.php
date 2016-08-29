@@ -22,31 +22,24 @@ class Blockdiag
      */
     public function parserInit(&$parser)
     {
-        global $srfgFormats, $smwgResultFormats;
-
-        $srfgFormats[] = 'nwdiag';
-        $smwgResultFormats['nwdiag'] = 'NwdiagResultPrinter';
+        $GLOBALS['srfgFormats'][] = 'nwdiag';
+        $GLOBALS['smwgResultFormats']['nwdiag'] = 'NwdiagResultPrinter';
 
         $parser->setHook('blockdiag', 'Blockdiag::display');
         return true;
     }
 
-    public function display($input, $args, $parser)
+    public function display($input)
     {
-        global $wgTmpDirectory;
-        global $wgUploadDirectory;
-        global $wgUploadPath;
-        global $wgBlockdiagPath;
-
-        $wgBlockdiagDirectory = "$wgUploadDirectory/blockdiag";
-        $wgBlockdiagUrl = "$wgUploadPath/blockdiag";
+        $wgBlockdiagDirectory = $GLOBALS['wgUploadDirectory'] . "/blockdiag";
+        $wgBlockdiagUrl = $GLOBALS['wgUploadPath'] . "/blockdiag";
 
         $newBlockdiag = new BlockdiagGenerator(
             $wgBlockdiagDirectory,
             $wgBlockdiagUrl,
-            $wgTmpDirectory,
+            $GLOBALS['wgTmpDirectory'],
             $input,
-            $wgBlockdiagPath
+            $GLOBALS['wgBlockdiagPath']
         );
         $html = $newBlockdiag->showImage();
 

@@ -11,8 +11,9 @@
  *
  **/
 
-class BlockdiagGenerator {
-    private $_path_array = array(
+class BlockdiagGenerator
+{
+    private $path_array = array(
         'blockdiag',
         'seqdiag',
         'actdiag',
@@ -20,145 +21,149 @@ class BlockdiagGenerator {
         'rackdiag',
         'packetdiag'
     );
-    private $_imgType = 'png';
-    private $_hash;
-    private $_source;
-    private $_tmpDir;
-    private $_blockdiagDir;
-    private $_blockdiagUrl;
+    private $imgType = 'png';
+    private $hash;
+    private $source;
+    private $tmpDir;
+    private $blockdiagDir;
+    private $blockdiagUrl;
 
 
-    public function __construct( $blockdiagDir, $blockdiagUrl, $tmpDir, $source, $binPath = null)
+    public function __construct($blockdiagDir, $blockdiagUrl, $tmpDir, $source, $binPath = null)
     {
-        $this->_blockdiagDir  = $blockdiagDir;
-        $this->_blockdiagUrl  = $blockdiagUrl;
-        $this->_tmpDir        = $tmpDir;
-        $this->_hash          = md5($source);
-        $this->_source        = $source;
+        $this->blockdiagDir  = $blockdiagDir;
+        $this->blockdiagUrl = $blockdiagUrl;
+        $this->tmpDir        = $tmpDir;
+        $this->hash          = md5($source);
+        $this->source        = $source;
         $path = ($binPath !== null) ? $binPath : '/usr/local/bin/';
-        $this->_path_array = array_flip($this->_path_array);
-        array_walk($this->_path_array, function (&$diag, $binary) use ($path) {
+        $this->path_array = array_flip($this->path_array);
+        array_walk($this->path_array, function (&$diag, $binary) use ($path) {
             $diag = rtrim($path, '/') . DIRECTORY_SEPARATOR . $binary;
         });
     }
 
     public function showImage()
     {
-        if (file_exists( $this->_getImagePath())) {
-            $html = $this->_mkImageTag();
+        if (file_exists($this->getImagePath())) {
+            $html = $this->mkImageTag();
         } else {
-            $html = $this->_generate();
+            $html = $this->generate();
         }
 
         return $html;
     }
 
-    private function _generate()
+    private function generate()
     {
-        if (preg_match('/^\s*(\w+)\s*{/', $this->_source, $matches)) {
+        if (preg_match('/^\s*(\w+)\s*{/', $this->source, $matches)) {
             $diagram_type = $matches[1];
         } else {
-           $diagram_type = 'blockdiag'; # blockdiag for default
+            $diagram_type = 'blockdiag'; // blockdiag for default
         }
 
-        $diagprog_path = $this->_path_array[$diagram_type];
+        $diagprog_path = $this->path_array[$diagram_type];
 
         if (!is_file($diagprog_path)) {
-            return $this->_error("$diagram_type is not found at the specified place.");
+            return $this->error("$diagram_type is not found at the specified place.");
         }
 
         // temporary directory check
-        if (!file_exists( $this->_tmpDir ) ){
-            if( !wfMkdirParents( $this->_tmpDir ) ) {
-                return $this->_error( 'temporary directory is not found.' );
+        if (!file_exists($this->tmpDir)) {
+            if (!wfMkdirParents($this->tmpDir)) {
+                return $this->error('temporary directory is not found.');
             }
-        } elseif (!is_dir( $this->_tmpDir )  ){
-            return $this->_error( 'temporary directory is not directory' );
-        } elseif (!is_writable( $this->_tmpDir ) ) {
-            return $this->_error( 'temporary directory is not writable' );
+        } elseif (!is_dir($this->tmpDir)) {
+            return $this->error('temporary directory is not directory');
+        } elseif (!is_writable($this->tmpDir)) {
+            return $this->error('temporary directory is not writable');
         }
 
         // create temporary file
-        $dstTmpName = tempnam($this->_tmpDir, 'blockdiag');
-        $srcTmpName = tempnam($this->_tmpDir, 'blockdiag');
+        $dstTmpName = tempnam($this->tmpDir, 'blockdiag');
+        $srcTmpName = tempnam($this->tmpDir, 'blockdiag');
 
         // write blockdiag source
-        $fp = fopen( $srcTmpName, 'w');
-        fwrite($fp, $this->_source);
+        $fp = fopen($srcTmpName, 'w');
+        fwrite($fp, $this->source);
         fclose($fp);
 
         // generate blockdiag image
         $cmd = $diagprog_path . ' -T ' .
-            escapeshellarg( $this->_imgType ) . ' -o ' .
-            escapeshellarg( $dstTmpName ) . ' ' .
-            escapeshellarg( $srcTmpName );
+            escapeshellarg($this->imgType) . ' -o ' .
+            escapeshellarg($dstTmpName) . ' ' .
+            escapeshellarg($srcTmpName);
 
         $res = `$cmd`;
 
-        if( filesize( $dstTmpName ) == 0 ) {
-            return $this->_error( 'unknown error.' );
+        if (filesize($dstTmpName) == 0) {
+            return $this->error('unknown error.');
         }
 
         // move to image directory
-        $hashpath = $this->_getHashPath();
-        if( !file_exists( $hashpath ) ) {
-            if( !@wfMkdirParents( $hashpath, 0755 ) ) {
-                return $this->_error( 'can not make blockdiag image directory', $this->_blockdiagDir );
+        $hashpath = $this->getHashPath();
+        if (!file_exists($hashpath)) {
+            if (!@wfMkdirParents($hashpath, 0755)) {
+                return $this->error('can not make blockdiag image directory', $this->blockdiagDir);
             }
-        } elseif( !is_dir( $hashpath ) ) {
-            return $this->_error( 'blockdiag image directory is already exists. but not directory' );
-        } elseif( !is_writable( $hashpath ) ) {
-            return $this->_error( 'blockdiag image directory is not writable' );
+        } elseif (!is_dir($hashpath)) {
+            return $this->error('blockdiag image directory is already exists. but not directory');
+        } elseif (!is_writable($hashpath)) {
+            return $this->error('blockdiag image directory is not writable');
         }
 
-        if( !rename( "$dstTmpName", "$hashpath/{$this->_hash}.png" ) ) {
-            return $this->_error( 'can not rename blockdiag image' );
+        if (!rename("$dstTmpName", "$hashpath/{$this->hash}.png")) {
+            return $this->error('can not rename blockdiag image');
         }
 
-        return $this->_mkImageTag();
+        return $this->mkImageTag();
     }
 
-    private function _mkImageTag()
+    private function mkImageTag()
     {
-        $url = $this->_getImageUrl();
+        $url = $this->getImageUrl();
 
-        return '<div style="overflow-x:scroll">' .
-            Xml::element(
+        return Html::rawElement(
+            'div',
+            array(
+                'style' => 'overflow-x: scroll'
+            ),
+            Html::element(
                 'img',
                 array(
                     'class' => 'blockdiag',
-                    'src' => $url,
+                    'src' => $url
                 )
-            ) .
-            "</div>";
+            )
+        );
     }
 
-    private function _getImageUrl()
+    private function getImageUrl()
     {
-        return "{$this->_blockdiagUrl}/{$this->_getHashSubPath()}/{$this->_hash}.png";
+        return "{$this->blockdiagUrl}/{$this->getHashSubPath()}/{$this->hash}.png";
     }
 
-    private function _getImagePath()
+    private function getImagePath()
     {
-        return "{$this->_blockdiagDir}/{$this->_getHashSubPath()}/{$this->_hash}.png";
+        return "{$this->blockdiagDir}/{$this->getHashSubPath()}/{$this->hash}.png";
     }
 
-    private function _getHashPath()
+    private function getHashPath()
     {
-        return "{$this->_blockdiagDir}/{$this->_getHashSubPath()}";
+        return "{$this->blockdiagDir}/{$this->getHashSubPath()}";
     }
 
-    private function _getHashSubPath()
+    private function getHashSubPath()
     {
-        return substr($this->_hash, 0, 1)
-            .'/'. substr($this->_hash, 1, 1)
-            .'/'. substr($this->_hash, 2, 1);
+        return substr($this->hash, 0, 1)
+            .'/'. substr($this->hash, 1, 1)
+            .'/'. substr($this->hash, 2, 1);
     }
 
-    private function _error( $msg, $append = '' )
+    private function error($msg, $append = '')
     {
         $mf     = 'blockdiag';
-        $errmsg = htmlspecialchars( $msg . ' ' . $append );
+        $errmsg = htmlspecialchars($msg . ' ' . $append);
         return "<strong class='error'>$mf ($errmsg)</strong>\n";
     }
 }

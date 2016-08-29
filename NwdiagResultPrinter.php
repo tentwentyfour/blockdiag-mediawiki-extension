@@ -13,44 +13,23 @@ class NwdiagResultPrinter extends SMWResultPrinter
 {
     public function getName()
     {
-        return wfMessage( 'nwdiag' )->text();
+        return wfMessage('nwdiag')->text();
     }
 
     protected function getResultText(SMWQueryResult $result, $outputMode)
     {
-        global $wgTmpDirectory;
-        global $wgUploadDirectory;
-        global $wgUploadPath;
-        global $wgBlockdiagPath;
-
         $data = $this->getResultData($result);
 
         if (empty($data)) {
             return $result->addErrors(
                 [
-                    wfMessage( 'srf-no-results' )->inContentLanguage()->text(),
+                    wfMessage('srf-no-results')->inContentLanguage()->text(),
                 ]
             );
+        } else {
+            return $this->getFormatOutput($data);
         }
-
-        $wgBlockdiagDirectory = "$wgUploadDirectory/blockdiag";
-        $wgBlockdiagUrl = "$wgUploadPath/blockdiag";
-
-        $nwdiagCode = $this->generateDiagCode($data, $this->params['gateway']);
-
-        $newBlockdiag = new BlockdiagGenerator(
-            $wgBlockdiagDirectory,
-            $wgBlockdiagUrl,
-            $wgTmpDirectory,
-            $nwdiagCode,
-            $wgBlockdiagPath
-        );
-
-        $this->isHTML = true;
-
-        return $newBlockdiag->showImage();
     }
-
 
     /**
      * Extracts the data we need to build a networkdiag DSL from the
@@ -84,7 +63,7 @@ class NwdiagResultPrinter extends SMWResultPrinter
 
                         $domain_parts = explode('.', $fqdn);
                         $hostname = $domain_parts[0];
-                        $group = '';
+                        $group ='';
 
                         if (count($domain_parts) >= 1) {
                             $group = $domain_parts[1];
@@ -124,16 +103,46 @@ class NwdiagResultPrinter extends SMWResultPrinter
         $params = parent::getParamDefinitions($definitions);
 
         $params['gateway'] = [
-            'message' => 'The node that will be used as a gateway',
-            'default' => '',
+           'message'=>'The node that will be used as a gateway',
+           'default'=>'',
         ];
 
         $params['domain'] = [
-            'message' => 'Specify which part of the fqdn is the domain name and should be stripped',
-            'default' => 'localhost.lan',
+           'message'=>'Specify which part of the fqdn is the domain name and should be stripped',
+           'default'=>'localhost.lan',
         ];
 
         return $params;
+    }
+
+    /**
+     * Prepare data for the output
+     *
+     * @since 1.1.2
+     *
+     * @param array $data
+     * @param array $options
+     *
+     * @return string
+     */
+    protected function getFormatOutput($data)
+    {
+        $this->isHTML = true;
+
+        $wgBlockdiagDirectory = $GLOBALS['wgUploadDirectory'] . "/blockdiag";
+        $wgBlockdiagUrl = $GLOBALS['wgUploadPath'] . "/blockdiag";
+
+        $nwdiagCode = $this->generateDiagCode($data, $this->params['gateway']);
+
+        $newBlockdiag = new BlockdiagGenerator(
+            $wgBlockdiagDirectory,
+            $wgBlockdiagUrl,
+            $GLOBALS['wgTmpDirectory'],
+            $nwdiagCode,
+            $GLOBALS['wgBlockdiagPath']
+        );
+
+        return $newBlockdiag->showImage();
     }
 
     /**
@@ -146,7 +155,7 @@ class NwdiagResultPrinter extends SMWResultPrinter
      */
     private function generateDiagCode($nodes, $gateway)
     {
-        $diagCode = 'nwdiag {' . PHP_EOL;
+        $diagCode ='nwdiag {'. PHP_EOL;
 
         // draw gateway
         $match = $this->findGateway($nodes, $gateway);
@@ -165,10 +174,10 @@ class NwdiagResultPrinter extends SMWResultPrinter
         $diagCode .= "\t}" . PHP_EOL;
 
         // draw groups
-        $groups = $this->findNodeGroups( $nodes );
+        $groups = $this->findNodeGroups($nodes);
         foreach (array_keys($groups) as $group) {
             // don't create a group if there is only one node inside it.
-            if ($group == '' || $groups[$group] == 1) {
+            if ($group ==''|| $groups[$group] == 1) {
                 continue;
             }
 
@@ -209,7 +218,7 @@ class NwdiagResultPrinter extends SMWResultPrinter
         return $groups;
     }
 
-    private function findGateway( $nodes, $gateway )
+    private function findGateway($nodes, $gateway)
     {
         $match = null;
         foreach ($nodes as $node) {
@@ -229,7 +238,7 @@ class NwdiagResultPrinter extends SMWResultPrinter
      */
     public function randomColor()
     {
-        $color = '#';
+        $color ='#';
         for ($i = 0; $i <= 2; $i++) {
             $color .= dechex(mt_rand(0xAA, 0xFF));
         }
