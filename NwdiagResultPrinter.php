@@ -99,12 +99,11 @@ class NwdiagResultPrinter extends SMWResultPrinter
 
                 // If a row does not have a value for the FQDN property label, it will not be returned
                 // by $field->getNextDataValue()
-                if (!isset($data[$server_name]['fqdn'])) {
+                if (!isset($data[$server_name]["fqdn"])) {
                     $data[$server_name]["fqdn"] = $server_name;
                     $data[$server_name]["node_host"] = $server_name;
                     $data[$server_name]["group"] = $server_name;
                 }
-
             }
         }
 
@@ -161,7 +160,7 @@ class NwdiagResultPrinter extends SMWResultPrinter
         foreach ($nodes as $node) {
             $ip = $node['ip_address'];
             $node_host = $node['node_host'];
-            $diagCode .= "\t\t$node_host [address=\"$ip\"];" . PHP_EOL;
+            $diagCode .= "\t\t\"$node_host\" [address=\"$ip\"];" . PHP_EOL;
         }
         $diagCode .= "\t}" . PHP_EOL;
 
@@ -217,6 +216,7 @@ class NwdiagResultPrinter extends SMWResultPrinter
             $node_host = $node['node_host'];
             if (strpos($node_host, $gateway) !== false) {
                 $match = explode(".", $node_host);
+                break;
             }
         }
         return $match;
